@@ -1,0 +1,8 @@
+[DEFAULT]
+ano_analisis = 2018
+uso_max_transformador=100
+costo_hora_desmontaje = 200000
+costo_hora_montaje = 200000
+costo_hora_transporte = 100000
+tiempo_de_recuperacion = 12
+velocidad = 30
