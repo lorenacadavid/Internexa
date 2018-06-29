@@ -6,7 +6,7 @@
 >>> obj.load_data()
 
 ### >>> obj.distancias
-
+>>> obj.pepito()
 
 """
 
@@ -34,10 +34,12 @@ class Optimizer():
         self.velocidad = None
 
 
-
     def set_working_dir(self, working_dir):
         """Establece el directorio de trabajo por defecto"""
         self.working_dir = working_dir
+
+    def pepito(self):
+        print ("hola Juan David")
 
 
     def load_data(self):
