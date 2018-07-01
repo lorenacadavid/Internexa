@@ -1,4 +1,4 @@
-id_trafo,id_transformador (#_serie/#_activo),fabricante,fases,Tipo_aislamiento,capacidad_kVA,Voltaje_primario_kV,Voltaje_secundario_kV,fecha_fabricación,anos_uso,vida_util_teorica_anos,id_nodo_Internexa,tiempo_actividad_reubicacion_h,costo_actividad_reubicacion,Fecha instalación 
+id_trafo,id_transformador (#_serie/#_activo),fabricante,fases,tipo_aislamiento,capacidad_kVA,voltaje_primario_kV,voltaje_secundario_kV,fecha_fabricacion,anos_uso,vida_util_teorica_anos,id_nodo_Internexa,tiempo_actividad_reubicacion_h,costo_actividad_reubicacion,fecha_instalacion
 1,1003526,MAGNETRON,3,Aceite,112.5,13.2 KV,208V/120V,,15,20,19029A,1.5,381000,
 2,1003712,MAGNETRON,3,Aceite,75,13.2 KV,208V/120V,1996,22,20,23912A,1.5,381000,19960101
 3,1003941,MAGNETRON,3,Aceite,112.5,13.2 KV,208V/120V,1995,23,20,23905A,1.5,381000,19950101
