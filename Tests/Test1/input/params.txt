@@ -9,6 +9,9 @@ perdida_vida_diaria_teorica = 0.000133
 temperatura_normal_trafo = 110
 temperatura_ambiente = 30
 probabilidad_deterioro_reubicacion = 0.05
+factor_carga_maxima = 0.068
+factor_carga_promedio = 0.0416667
+ 
 
 #
 # Parametros para el calculo de las perdidas de transformacion
