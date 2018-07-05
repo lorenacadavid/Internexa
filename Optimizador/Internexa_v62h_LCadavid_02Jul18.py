@@ -1,26 +1,6 @@
-
-# coding: utf-8
-
-# In[1]:
-
-
-get_ipython().run_line_magic('reset', '-f')
-
-import os
-import numpy as np
-import pandas as pd
-import math
-from math import e
-
-import configparser
-
-
-# In[23]:
-
-
-get_ipython().run_line_magic('clear', '')
 """
 Comentarios sobre el tutorial
+-----------------------------
 
 Aca se crea la clase
 >>> m = Optimizer()
@@ -38,19 +18,30 @@ La funcion `set_working_dir` permite cambiar el directorio de trabajo.
 >>> x = pd.read_csv(m.working_dir + "output/solucion_final.csv", sep=',', decimal='.')
 >>> x.head() # doctest: +NORMALIZE_WHITESPACE
    Unnamed: 0  id_n  id_t           cpt           cvu         coper     cperm  \\
-0           0   1.0   9.0  2.358724e+07  3.316718e+06  2.690396e+07  381000.0   
-1           1   2.0   2.0  1.053354e+05  2.397708e+04  1.293125e+05       0.0   
-2           2   3.0   3.0  1.369407e+05  2.877250e+04  1.657131e+05       0.0   
-3           3   4.0  30.0  1.531476e+07  1.750192e+06  1.706495e+07  381000.0   
-4           4   5.0  13.0  2.655321e+07  3.740291e+06  3.029350e+07  381000.0   
+0           0   1.0   9.0  2.358724e+07  3.316718e+06  2.690396e+07  381000.0
+1           1   2.0   2.0  1.053354e+05  2.397708e+04  1.293125e+05       0.0
+2           2   3.0   3.0  1.369407e+05  2.877250e+04  1.657131e+05       0.0
+3           3   4.0  30.0  1.531476e+07  1.750192e+06  1.706495e+07  381000.0
+4           4   5.0  13.0  2.655321e+07  3.740291e+06  3.029350e+07  381000.0
 <BLANKLINE>
-      cdete  eval  perm  bloq  capa_t     cmax_n  
-0  238464.0   1.0   1.0   0.0    45.0  19.380000  
-1       0.0   1.0   0.0   0.0    75.0   8.058000  
-2       0.0   1.0   0.0   0.0   112.5   3.876000  
-3  101400.0   1.0   1.0   0.0    10.0   8.926133  
-4  286156.8   1.0   1.0   0.0    50.0  24.022133  
+      cdete  eval  perm  bloq  capa_t     cmax_n
+0  238464.0   1.0   1.0   0.0    45.0  19.380000
+1       0.0   1.0   0.0   0.0    75.0   8.058000
+2       0.0   1.0   0.0   0.0   112.5   3.876000
+3  101400.0   1.0   1.0   0.0    10.0   8.926133
+4  286156.8   1.0   1.0   0.0    50.0  24.022133
 """
+
+
+import os
+import numpy as np
+import pandas as pd
+import math
+from math import e
+
+import configparser
+
+
 class Optimizer():
     """Optimizador
     """
@@ -58,22 +49,22 @@ class Optimizer():
         """Esta función crea la clase y lee la informacion relevante del directorio de trabajo.
         """
         pass
-        
+
     def set_working_dir(self, working_dir):
         """Establece el directorio de trabajo por defecto.
-        
+
         Args:
             working_dir (str): directorio de trabajo.
-            
+
         """
         self.working_dir = working_dir
         self.pathoutput = working_dir + 'output/'
 
-        
+
     def load_data(self):
         """Lee los datos del directorio de trabajo.
         """
-        
+
         ## definicion del archivo txt donde estan los parametros
         parser = configparser.ConfigParser()
         parser.read(self.working_dir + 'input/params.txt')
@@ -89,12 +80,12 @@ class Optimizer():
 
         ## calculos con parametros globales
         self.HVUT = 24 / self.PVDT
-        self.AVUT = self.HVUT / (24*365) 
+        self.AVUT = self.HVUT / (24*365)
 
         ##
         ## Resoluciones 818 y 819
         ##
-        
+
         ##    Transformadores monofasicos - Perdidas en vacio
         ##
         self.P1FVAC1 = float(parser['RES818819']['Par_1f_vac_1'])
@@ -102,7 +93,7 @@ class Optimizer():
 
         ##
         ##    Transformadores monofasicos - Perdidas con carga
-        ##        
+        ##
         self.P1FCAR1 = float(parser['RES818819']['Par_1f_car_1'])
         self.P1FCAR2 = float(parser['RES818819']['Par_1f_car_2'])
         self.P1FCAR3 = float(parser['RES818819']['Par_1f_car_3'])
@@ -120,7 +111,7 @@ class Optimizer():
 
         ##
         ##    Transformadores trifasicos - Perdidas con carga
-        ##        
+        ##
         self.P3FCAR11 = float(parser['RES818819']['Par_3f_car_11'])
         self.P3FCAR12 = float(parser['RES818819']['Par_3f_car_12'])
         self.P3FCAR13 = float(parser['RES818819']['Par_3f_car_13'])
@@ -145,7 +136,7 @@ class Optimizer():
         self.vu.columns = ['tgrc', 'fase_t','lipo','lspo','cpre','dura','cpor','tmpc','tmac']
         self.cartectraf.columns = ['fase_t', 'capa_t','cnue_t']
 
-        ## 
+        ##
         ## adecuacion de las tablas para facilidad en calculos
         ##
         self.inv = self.inv.merge(self.nodos[['id_n','id_n_Internexa']], on = 'id_n_Internexa',how = 'left')
@@ -153,7 +144,7 @@ class Optimizer():
         ## calcular carga maxima y carga promedio de los nodos
         self.nodos['cpro_n'] = self.nodos['dmda_n'] / 30 * self.FCPR
         self.nodos['cmax_n'] = self.nodos['dmda_n'] / 30 * self.FCMX
-        
+
         ## indicar grupo del trafo para calculo de las perdidas de transformacion
         self.inv['grpt_t'] = 1
         self.inv.loc[(self.inv.fase_t == 3) & (self.inv.capa_t >= 150), 'grpt_t'] = 2
@@ -164,7 +155,7 @@ class Optimizer():
         self.inv.loc[(self.inv.fase_t == 1) & (self.inv.capa_t > 50), 'grpv_t'] = 2
         self.inv.loc[(self.inv.fase_t == 3) & (self.inv.capa_t >= 150), 'grpv_t'] = 2
         self.inv.loc[(self.inv.fase_t == 3) & (self.inv.capa_t >= 500), 'grpv_t'] = 3
-                
+
         ## calcular vida util restante del trafo en meses
         self.inv['viut_t'] = self.AVUT
         self.inv['viur_t'] = (self.inv.viut_t - self.inv.anus) * 12
@@ -179,11 +170,11 @@ class Optimizer():
         ## armar keys para busquedas
         self.cartectraf['faca'] = self.cartectraf.fase_t.map(str) + "-" + self.cartectraf.capa_t.map(str)
         self.vu['tfcg'] = self.vu.tgrc.map(str) + "-" + self.vu.fase_t.map(str) + "-" + self.vu.cpre.map(str) + "-" + self.vu['grpv_t'].map(str)
-   
-    
+
+
     def parnd(self, id_n):
         """Obtiene los parametros de un nodo.
-        
+
         Args:
             id_n (int): id del nodo.
 
@@ -191,14 +182,14 @@ class Optimizer():
             cmax_n (float): carga maxima que soporta el nodo.
             cpro_n (float): carga promedio que soporta el nodo.
             pkwh_n (float): precio por kWh de la electricidad que sirve el nodo.
-        
+
         """
         cmax_n = float(self.nodos[self.nodos.id_n == id_n]['cmax_n'])
-        cpro_n = float(self.nodos[self.nodos.id_n == id_n]['cpro_n'])    
-        pkwh_n = float(self.nodos[self.nodos.id_n == id_n]['pkwh_n']) 
+        cpro_n = float(self.nodos[self.nodos.id_n == id_n]['cpro_n'])
+        pkwh_n = float(self.nodos[self.nodos.id_n == id_n]['pkwh_n'])
         return (cmax_n,cpro_n,pkwh_n)
 
-    
+
     def partf(self, id_t):
         """Obtiene los parametros de un trafo.
 
@@ -216,7 +207,7 @@ class Optimizer():
             grpv_t (int): grupo al que pertenece el trafo para el calculo de las perdidas de vida util.
             faca_t (str): key fase-capacidad.
             cnue_t (int): precio por kWh de la electricidad que sirve el nodo.
-        
+
         """
         capa_t = float(self.inv[self.inv.id_t == id_t]['capa_t'])
         fase_t = int(self.inv[self.inv.id_t == id_t]['fase_t'])
@@ -230,7 +221,7 @@ class Optimizer():
         cnue_t = int(self.cartectraf[self.cartectraf.faca == faca_t]['cnue_t'])
         return (capa_t, fase_t, viut_t, nodo_t, creu_t, viur_t, grpt_t, grpv_t, faca_t, cnue_t)
 
-    
+
     def cospt(self, id_n, id_t):
         """Calcula los costos de las perdidas de transformacion de un par nodo*trafo.
 
@@ -240,7 +231,7 @@ class Optimizer():
 
         Returns:
             cpt_nt (float): costos de perdidas de transformacion en pesos.
-        
+
         """
         if id_n == 999999:
             cpt_nt = 0
@@ -265,7 +256,7 @@ class Optimizer():
                     pnvac = self.P3FVAC31 * capa_t ** self.P3FVAC32
                     pncar = self.P3FCAR31 * capa_t + self.P3FCAR32
 
-            # calcular las perdidas en hierro y cobre en unidades W 
+            # calcular las perdidas en hierro y cobre en unidades W
             pfeW = pnvac
             pcuW = pncar * futi_nt ** 2
             ptrW = pfeW + pcuW
@@ -273,8 +264,8 @@ class Optimizer():
             # monetizacion de las perdidas
             cpt_nt = ptrW / 1000 * pkwh_n * 24 * 30 * viur_t
         return cpt_nt
-    
-    
+
+
     def cospv(self, id_n, id_t):
         """Calcula los costos de las perdidas de vida util de un par nodo*trafo
 
@@ -284,7 +275,7 @@ class Optimizer():
 
         Returns:
             cpt_vu (float): costos de perdidas de vida util en pesos.
-        
+
         """
         if id_n == 999999:
             cvu_nt = 0
@@ -312,14 +303,14 @@ class Optimizer():
             fevej = (self.HSCD / 24) * (e**(15000/383 - 15000/(theta + 273))-1)
             pvdr = self.PVDT * (1 + fevej)
 
-            # valorar perdida de vida util restante en pesos, durante lo que queda de vida util del trafo en el nodo 
+            # valorar perdida de vida util restante en pesos, durante lo que queda de vida util del trafo en el nodo
             cvu_nt = viur_t * 30 * cnue_t * pvdr
         return cvu_nt
-    
-    
+
+
     def temperPC(self, futi_nt, key):
         """Calcula la temperatura del punto mas caliente dado un factor de utilizacion
-        
+
         Args:
             futi_nt (float): factor de utilizacion.
             key (int): key TAMB - fase_t - cpre_nt - grpv_t.
@@ -340,9 +331,9 @@ class Optimizer():
                 if carga <= row['cpor']:
                     theta = row['tmpc']
                     break
-        return theta 
-    
-    
+        return theta
+
+
     def costopermtf(self, id_t):
         """Calcula los costos de permutacion del trafo
 
@@ -351,9 +342,9 @@ class Optimizer():
 
         Returns:
             cperm_t (float): costo de permutacion del trafo.
-        
+
         """
-        
+
         cperm_t = float(self.inv[self.inv.id_t == id_t]['creu_t'])
         return cperm_t
 
@@ -387,17 +378,17 @@ class Optimizer():
 
         """
         id_t2 = 0
-        while (id_t2 ==0):       
+        while (id_t2 ==0):
             # identificar el nodo mas costoso y su trafo para intercambio
-            id_n1, id_t1 = self.ndmascostoso(sol)            
+            id_n1, id_t1 = self.ndmascostoso(sol)
             id_n2, id_t2 = self.tfmascostoso(id_n1, sol)
 
             # si no encuentra un trafo adecuado para el cambio, se bloquea el nodo y repite con el siguiente mas costoso
             if id_t2 == 0:
                 sol.at[sol.id_n == id_n1,'bloq']=1
         return (id_n1, id_t1, id_n2, id_t2)
-    
-    
+
+
     def ndmascostoso (self, sol):
         """Elige el nodo mas costoso aun no evaluado, junto con su trafo asociado.
 
@@ -435,7 +426,7 @@ class Optimizer():
         Returns:
             id_n2 (int): id del nodo asociado al trafo mas costoso.
             id_t2 (int): id del trafo mas costoso.
-        
+
         """
         cmax_n = self.parnd(id_n)[0]
         id_t = int(sol[sol.id_n == id_n]['id_t'])
@@ -461,7 +452,7 @@ class Optimizer():
             id_t2 = int(solcopia.iloc[0,1])
         return (id_n2, id_t2)
 
-    
+
     def cospermpar(self, id_t1, id_t2, sol_prov):
         """Calcula los costos de permutacion de dos trafos en una solucion provisional respecto a una solucion inicial.
 
@@ -475,7 +466,7 @@ class Optimizer():
             cdete_t1 (float): costo de deterioro del trafo 1, en pesos.
             cperm_t2 (float): costo de permutar el trafo 2, en pesos.
             cdete_t1 (float): costo de deterioro del trafo 2, en pesos.
-        
+
         """
         cperm_t1 = 0
         cperm_t2 = 0
@@ -494,11 +485,11 @@ class Optimizer():
             cperm_t2 = self.costopermtf(id_t2)
             cdete_t2 = self.costodetetf(id_t2)
         return (cperm_t1, cdete_t1, cperm_t2, cdete_t2)
-    
-    
+
+
     def condparada(self, sol):
         """Verifica si se ha cumplido la condición de parada de las permutaciones.
-        
+
         Args:
             sol (tupla): solucion actual de la red.
 
@@ -525,7 +516,7 @@ class Optimizer():
         cp_bodini = self.bodini['capa_t'].sum()
         cp_bodfin = self.bodfin['capa_t'].sum()
 
-    
+
     def armarsolorig(self):
         """Arma la solucion actual de la red con sus costos asociados.
         """
@@ -538,10 +529,10 @@ class Optimizer():
             # calculos de costos para los nodos reales y en bodega
             cpt_nt = 0
             cvu_nt = 0
-            if id_n != 999999: 
+            if id_n != 999999:
                 cpt_nt = self.cospt (id_n,id_t)
                 cvu_nt = self.cospv (id_n,id_t)
-            coper_nt = cpt_nt + cvu_nt              
+            coper_nt = cpt_nt + cvu_nt
 
             # almacenar el costo para ese arreglo en particular
             solorigi.loc[index]= [id_n,id_t,cpt_nt,cvu_nt,coper_nt,0,0,0,0,0]
@@ -552,14 +543,14 @@ class Optimizer():
 
         # escribir la solucion inicial y calcular su costo
         solorigi.to_csv(self.pathoutput + 'solucion_inicial.csv')
-        self.solini = solorigi.copy() 
+        self.solini = solorigi.copy()
         self.ctsolini = solorigi['coper'].sum()
 
 
 
     def permutar(self, sol):
         """Hace una permutacion de un par de trafos en una solucion y encuentra los costos asociados.
-        
+
         Args:
             sol (tupla): solucion actual de la red.
 
@@ -593,7 +584,7 @@ class Optimizer():
         cperm = cperm_t1 + cperm_t2
         cdeter = cdete_t1 + cdete_t2
 
-        
+
         # hacer el cambio oficial en la solucion
         self.per_hecha = 0
         if coact >= (coper + cperm + cdeter):
@@ -606,7 +597,7 @@ class Optimizer():
             #Actualizar la matriz de solución
             sol.at[(sol.id_n == id_n1) & (sol.id_t == id_t1),'id_t']=id_t2
             sol.at[(sol.id_n == id_n2) & (sol.id_t == id_t2),'id_t']=id_t1
-            
+
             sol.at[(sol.id_n == id_n1) & (sol.id_t == id_t2),'cpt']=cpt_n1t2
             sol.at[(sol.id_n == id_n2) & (sol.id_t == id_t1),'cpt']=cpt_n2t1
             sol.at[(sol.id_n == id_n1) & (sol.id_t == id_t2),'cvu']=cvu_n1t2
@@ -623,14 +614,14 @@ class Optimizer():
             sol.at[(sol.id_t == id_t2),'perm']=1
 
         #Guardar estadísticas
-        self.solfin = sol.copy() 
+        self.solfin = sol.copy()
         self.cosolfin = sol['coper'].sum()
         self.cpsolfin = sol['cperm'].sum()
         self.cdsolfin = sol['cdete'].sum()
         self.ctsolfin = self.cosolfin + self.cpsolfin + self.cdsolfin
-        
 
-        
+
+
     def run(self):
         """Ejecuta la rutina de optimizacion.
         """
@@ -638,17 +629,17 @@ class Optimizer():
         self.set_working_dir(working_dir="../Tests/Test1/")
         self.load_data()
         self.armarsolorig()
-        
+
         # armar la matriz de progresos en el hallazgo de mejores soluciones
         self.prog_sol = pd.DataFrame(columns=['iteracion','tperm','coper','cperm','cdete','costo_total'])
         self.prog_sol.loc[0] = [0,0,self.ctsolini,0,0,self.ctsolini]
-        
+
         # inicializar contadores y condicion de parada
         titer = 0
         tperm = 0
         sol = self.solini.copy()
         stop = self.condparada(sol)
-        
+
         # iterar
         while (stop == 0):
             # permutar
@@ -659,7 +650,7 @@ class Optimizer():
             titer = titer + 1
 
             # guardar progreso de la simulacion
-            self.prog_sol.loc[titer] = [titer,tperm,self.cosolfin,self.cpsolfin,self.cdsolfin,self.ctsolfin]     
+            self.prog_sol.loc[titer] = [titer,tperm,self.cosolfin,self.cpsolfin,self.cdsolfin,self.ctsolfin]
 
             # verificar condicion de parada
             stop = self.condparada(sol)
@@ -671,7 +662,7 @@ class Optimizer():
         self.bodini.to_csv(self.pathoutput + 'bodega_inicial.csv')
         self.bodfin.to_csv(self.pathoutput + 'bodega_final.csv')
 
-        
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
@@ -689,4 +680,3 @@ m.run()
 
 print(m.ctsolini)
 print(m.ctsolfin)
-
