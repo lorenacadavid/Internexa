@@ -1,0 +1,7 @@
+id_nodo,id_nodo_Internexa,latitud_GD,longitud_GD,tension_nodo_KV,carga_promedio_kVA,carga_maxima_kVA,carga_remunerada_CREG_kVA,demanda_mes_kW,costo_energia_nosuministrada_reubicacion_KVA,crecimiento_esperado_demanda_kVA,tipo_usuario_predominante,tarifa_KWh_usuario_predominante
+1,19029A,3.52594247,-76.30295161,2,313,95.6,,8550,14947,0.2,3,524.5
+2,23912A,3.54802852,-76.29028573,2,140.7,81,,3555,6215,0.2,5,524.5
+3,23905A,3.54816048,-76.29183802,2,59.1,92.3,,1710,2990,0.2,5,524.5
+4,37995A,3.54687593,-76.28751831,2,544,165.4,,3938,6884,0.2,4,524.5
+5,226847A,3.50354323,-76.29796615,2,683,164.3,,10598,18527,0.2,2,524.5
+999999,Palmira,3.517062,-76.29918,0,639,0,,0,0,0.2,bodega,524.5
