@@ -1,0 +1,51 @@
+
+#
+# Parametros para la corrida
+#
+[CALCULOS]
+horas_sobrecarga_dia = 3
+perdida_vida_diaria_teorica = 0.000137
+ 
+temperatura_normal_trafo = 110
+temperatura_ambiente = 30
+probabilidad_deterioro_reubicacion = 0.05
+factor_carga_maxima = 0.068
+factor_carga_promedio = 0.0416667
+ 
+
+#
+# Parametros para el calculo de las perdidas de transformacion
+#
+
+[RES818819]
+#
+# Transformadores monofasicos
+# -----------------------------------------------
+# Perdidas en vacio
+P1FVAC1 = 9.8033
+P1FVAC2 = 0.7141
+#
+# Perdidas con carga
+P1FCAR1 = 0.000063
+P1FCAR2 = -0.02695
+P1FCAR3 = 10.657
+P1FCAR4 = 38.267
+
+# Transformadores trifasicos
+# -----------------------------------------------
+# Perdidas en vacio
+P3FVAC11 = 10.514
+P3FVAC12 = 0.7486
+P3FVAC21 = 13.27
+P3FVAC22 = 0.7093
+P3FVAC31 = 1.227
+P3FVAC32 = 554.59
+#
+# Perdidas con carga
+P3FCAR11 = -0.0103
+P3FCAR12 = 13.892
+P3FCAR13 = 106.65
+P3FCAR21 = 10.465
+P3FCAR22 = 537
+P3FCAR31 = 9.2632
+P3FCAR32 = 1875.2
